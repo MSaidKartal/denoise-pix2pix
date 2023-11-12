@@ -47,9 +47,9 @@ def DataLoader(case_list, shape=(512,512), normalize=True):
 
     for case_name in tqdm(case_list):
         X1, X2= load_case(case_name)
-        if normalize:
-            X1 = normalize(X1)
-            X2 = normalize(X2)
+
+        X1 = normalize(X1)
+        X2 = normalize(X2)
 
         for i in range(len(X1)):
             inp = np.expand_dims(cv2.resize(X1[i], shape, interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
