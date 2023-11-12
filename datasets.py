@@ -45,7 +45,7 @@ def DataLoader(case_list, shape=(512,512), normalize=True):
     inp_img = []
     tar_img = []
 
-    for case_list in tqdm(case_name):
+    for case_name in tqdm(case_list):
         X1, X2= load_case(case_name)
         if normalize:
             X1 = normalize(X1)
