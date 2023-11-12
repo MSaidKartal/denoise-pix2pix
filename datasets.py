@@ -21,8 +21,18 @@ def load_case(case_name):
     datap_im = sitk.ReadImage(path_listp[0])
     inp = sitk.GetArrayFromImage(datap_im)
 
-    #print("inp shape:", inp.shape)
-    #print("target shape:", target.shape)
+    if preprocess:
+
+        X1 = []
+        X2 = []
+
+        for i in range(len(inp)):
+            x1 = np.expand_dims(cv2.resize(inp[i], (512,512), interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
+            x2 = np.expand_dims(cv2.resize(target[i], (512,512), interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
+            X1.append(x1)
+            X2.append(x2)
+
+        return normalize(np.array(X1)), normalize(np.array(X2))
 
     return inp, target
 
