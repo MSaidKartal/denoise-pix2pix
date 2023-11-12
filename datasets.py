@@ -10,7 +10,7 @@ dirs = {
     'metrics': 'data/metrics.xlsx'
 }
 
-def load_case(case_name):
+def load_case(case_name, preprocess=False):
     case_num = case_name.split('_')[-1]
 
     path_list = glob.glob(f"{dirs['high_res']}/{case_num}.nii.gz")
