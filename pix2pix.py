@@ -13,8 +13,6 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 import skimage
 import skimage.io as io
-import pydicom
-from pydicom import dcmread
 import glob
 
 import tensorflow as tf
