@@ -4,6 +4,12 @@ import numpy as np
 from tqdm import tqdm
 import SimpleITK as sitk
 
+dirs = {
+    'low_res': 'data/low_res',
+    'high_res': 'data/source',
+    'metrics': 'data/metrics.xlsx'
+}
+
 def load_case(case_name):
     case_num = case_name.split('_')[-1]
 
