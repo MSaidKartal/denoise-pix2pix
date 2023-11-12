@@ -40,7 +40,7 @@ def normalize(im):
     im = (((im - im.min())/(im.max()-im.min()))*2)-1
     return im
 
-def DataLoader(case_list, shape=(512,512), normalize=True):
+def DataLoader(case_list, shape=(512,512)):
 
     inp_img = []
     tar_img = []
