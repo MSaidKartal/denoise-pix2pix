@@ -1,3 +1,4 @@
+import numpy as np
 from ipywidgets import interact, IntSlider
 from matplotlib.patches import PathPatch, Rectangle
 import matplotlib.pyplot as plt
