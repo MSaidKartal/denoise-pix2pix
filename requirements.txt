@@ -1,2 +1,2 @@
-SimpleITK==3.3.4
+SimpleITK
 scikit-image==0.19.3
