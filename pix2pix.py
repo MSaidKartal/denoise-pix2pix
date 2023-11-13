@@ -5,9 +5,6 @@ Created on Thu Jan 27 01:18:20 2022
 @author: mskar
 """
 #Library Import
-import io
-import sys
-from contextlib import redirect_stdout
 import cv2
 import os
 import numpy as np
@@ -241,7 +238,7 @@ def generate_real_samples(dataset, n_samples, patch_shape):
 # generate a batch of images, returns images and targets
 def generate_fake_samples(g_model, samples, patch_shape):
 	# generate fake instance
-	X = g_model.predict(samples)
+	X = g_model.predict(samples, verbose=0)
 	# create 'fake' class labels (0)
 	y = zeros((len(X), patch_shape, patch_shape, 1))
 	return X, y
@@ -314,17 +311,16 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 	progress_bar = tqdm(total=n_steps, desc="Training Progress")
 	# manually enumerate epochs
 	for i in range(n_steps):
-		with redirect_stdout(f):
-			# select a batch of real samples
-			[X_realA, X_realB], y_real = generate_real_samples(dataset, n_batch, n_patch)
-			# generate a batch of fake samples
-			X_fakeB, y_fake = generate_fake_samples(g_model, X_realA, n_patch)
-			# update discriminator for real samples
-			d_loss1 = d_model.train_on_batch([X_realA, X_realB], y_real)
-			# update discriminator for generated samples
-			d_loss2 = d_model.train_on_batch([X_realA, X_fakeB], y_fake)
-			# update the generator
-			g_loss, _, _ = gan_model.train_on_batch(X_realA, [y_real, X_realB])
+		# select a batch of real samples
+		[X_realA, X_realB], y_real = generate_real_samples(dataset, n_batch, n_patch)
+		# generate a batch of fake samples
+		X_fakeB, y_fake = generate_fake_samples(g_model, X_realA, n_patch)
+		# update discriminator for real samples
+		d_loss1 = d_model.train_on_batch([X_realA, X_realB], y_real)
+		# update discriminator for generated samples
+		d_loss2 = d_model.train_on_batch([X_realA, X_fakeB], y_fake)
+		# update the generator
+		g_loss, _, _ = gan_model.train_on_batch(X_realA, [y_real, X_realB])
 		progress_bar.update(1)
 		progress_bar.set_postfix(D1_loss=d_loss1, D2_loss=d_loss2, G_loss=g_loss)
 		# summarize model performance
