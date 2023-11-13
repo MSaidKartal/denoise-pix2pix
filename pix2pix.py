@@ -290,8 +290,8 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 	# save plot to file
 	filename1 = 'plot_%06d.png' % (step+1)
 	fig.savefig(filename1)
-	fig.close()
 	fig.show()
+	plt.close(fig)
 	# save the generator model
 	filename2 = 'model_%06d.h5' % (step+1)
 	g_model.save(filename2)
@@ -307,8 +307,10 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 	bat_per_epo = int(len(trainA) / n_batch)
 	# calculate the number of training iterations
 	n_steps = bat_per_epo * n_epochs
+	# setup progress bar
+	progress_bar = tqdm(total=n_steps, desc="Training Progress")
 	# manually enumerate epochs
-	for i in tqdm(range(n_steps), desc="Training Progress"):
+	for i in range(n_steps):
 		# select a batch of real samples
 		[X_realA, X_realB], y_real = generate_real_samples(dataset, n_batch, n_patch)
 		# generate a batch of fake samples
@@ -319,9 +321,10 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 		d_loss2 = d_model.train_on_batch([X_realA, X_fakeB], y_fake)
 		# update the generator
 		g_loss, _, _ = gan_model.train_on_batch(X_realA, [y_real, X_realB])
-		# summarize performance
-		tqdm.write(f'Step: {i+1}, D1 Loss: {d_loss1:.3f}, D2 Loss: {d_loss2:.3f}, G Loss: {g_loss:.3f}')
+		progress_bar.update(1)
+		progress_bar.set_postfix(D1_loss=d_loss1, D2_loss=d_loss2, G_loss=g_loss)
 		# summarize model performance
 		if (i+1) % 100 == 0:
 			summarize_performance(i, g_model, dataset)
+		progress_bar.close()
 
