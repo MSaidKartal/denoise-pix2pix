@@ -10,6 +10,7 @@ import os
 import numpy as np
 from tqdm import tqdm
 import matplotlib.pyplot as plt
+from PIL import Image
 import skimage
 import skimage.io as io
 import glob
@@ -290,12 +291,20 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 	filename1 = 'plot_%06d.png' % (step+1)
 	fig.savefig(filename1)
 	plt.close(fig)
-	plt.show()
+	#plt.show()
+	img = Image.open(filename1)
 	
+	# Display the image
+	plt.figure(figsize=(21, 14))
+	
+	# Display the image
+	plt.imshow(img)
+	plt.axis('off')  # Hide axis
+	plt.show()
 	# save the generator model
 	filename2 = 'model_%06d.h5' % (step+1)
-	g_model.save(filename2)
-	print('>Saved: %s and %s' % (filename1, filename2))
+	#g_model.save(filename2)
+	#print('>Saved: %s and %s' % (filename1, filename2))
 
 # train pix2pix models
 def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
