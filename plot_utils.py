@@ -3,20 +3,33 @@ from ipywidgets import interact, IntSlider
 from matplotlib.patches import PathPatch, Rectangle
 import matplotlib.pyplot as plt
 from matplotlib.path import Path
+from skimage.metrics import peak_signal_noise_ratio as compare_psnr
+from skimage.metrics import structural_similarity as compare_ssim
+
+def calc_psvol(high, low):
+    psnr = []
+    ssim = []
+    for i in range(len(high)):
+        range = high[i].max()-high[i].min()
+        psnr.append(compare_psnr(high[i], low[i], data_range=rangeD))
+        ssim.append(compare_ssim(high[i], low[i], data_range=rangeD))
+    return psnr, ssim
+
 
 def show_volume(vol, z, fig_size=(14, 7)):
     #print(vol[0].shape)
     #print(vol[1].shape)
-
+    psnr, ssim = calc_psvol(vol[1], vol[0])
+    
     fig, axarr = plt.subplots(nrows=1, ncols=2, figsize=fig_size)
     v_z, v_y, v_x = vol[0].shape
 
     axarr[0].imshow(vol[0][z, :, :], cmap="gray")
-    axarr[0].set_title('Low Resolution', fontweight='bold', fontsize=20)
+    axarr[0].set_title(f"Low Resolution\nPSNR:{psnr[z]:.3f} / SSIM:{ssim[z]:.3f}", fontweight='bold', fontsize=20)
     axarr[0].axis('off')
 
     axarr[1].imshow(vol[1][z, :, :], cmap="gray")
-    axarr[1].set_title('High Resolution', fontweight='bold', fontsize=20)
+    axarr[1].set_title(f"High Resolution", fontweight='bold', fontsize=20)
     axarr[1].axis('off')
 
     fig.tight_layout()
