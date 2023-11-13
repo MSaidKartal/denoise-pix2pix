@@ -10,7 +10,7 @@ def calc_psvol(high, low):
     psnr = []
     ssim = []
     for i in range(len(high)):
-        range = high[i].max()-high[i].min()
+        rangeD = high[i].max()-high[i].min()
         psnr.append(compare_psnr(high[i], low[i], data_range=rangeD))
         ssim.append(compare_ssim(high[i], low[i], data_range=rangeD))
     return psnr, ssim
@@ -25,11 +25,11 @@ def show_volume(vol, z, fig_size=(14, 7)):
     v_z, v_y, v_x = vol[0].shape
 
     axarr[0].imshow(vol[0][z, :, :], cmap="gray")
-    axarr[0].set_title(f"Low Resolution\nPSNR:{psnr[z]:.3f} / SSIM:{ssim[z]:.3f}", fontweight='bold', fontsize=20)
+    axarr[0].set_title(f"Low Resolution\nPSNR:{psnr[z]:.3f} / SSIM:{ssim[z]:.3f}", fontweight='bold', fontsize=18)
     axarr[0].axis('off')
 
     axarr[1].imshow(vol[1][z, :, :], cmap="gray")
-    axarr[1].set_title(f"High Resolution", fontweight='bold', fontsize=20)
+    axarr[1].set_title("High Resolution", fontweight='bold', fontsize=18)
     axarr[1].axis('off')
 
     fig.tight_layout()
@@ -48,20 +48,22 @@ def interactive_show(vol):
 def show_3volume(vol, z, fig_size=(21, 7)):
     #print(vol[0].shape)
     #print(vol[1].shape)
-
+    psnr, ssim = calc_psvol(vol[1], vol[0])
+    psnr1, ssim1 = calc_psvol(vol[1], vol[2])
+    
     fig, axarr = plt.subplots(nrows=1, ncols=3, figsize=fig_size)
     v_z, v_y, v_x, n = vol[0].shape
 
     axarr[0].imshow(vol[0][z, :, :, 0], cmap="gray")
-    axarr[0].set_title('Input (Low Resolution)', fontweight='bold', fontsize=18)
+    axarr[0].set_title(f"Input (Low Resolution)\nPSNR:{psnr[z]:.3f} / SSIM:{ssim[z]:.3f}", fontweight='bold', fontsize=18)
     axarr[0].axis('off')
 
     axarr[1].imshow(vol[1][z, :, :, 0], cmap="gray")
-    axarr[1].set_title('Target (High Resolution)', fontweight='bold', fontsize=20)
+    axarr[1].set_title("Target (High Resolution)", fontweight='bold', fontsize=18)
     axarr[1].axis('off')
 
     axarr[2].imshow(vol[2][z, :, :, 0], cmap="gray")
-    axarr[2].set_title('Generated Image', fontweight='bold', fontsize=20)
+    axarr[2].set_title(f"Generated Image\nPSNR:{psnr1[z]:.3f} / SSIM:{ssim1[z]:.3f}", fontweight='bold', fontsize=18)
     axarr[2].axis('off')
 
     fig.tight_layout()
