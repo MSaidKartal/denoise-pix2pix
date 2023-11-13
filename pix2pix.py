@@ -258,24 +258,40 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 	X_realB = (X_realB + 1) / 2.0
 	X_fakeB = (X_fakeB + 1) / 2.0
 	# plot real source images
-	for i in range(n_samples):
-		plt.subplot(3, n_samples, 1 + i)
-		plt.axis('off')
-		plt.imshow(X_realA[i,:,:,0], cmap='gray')
-	# plot generated target image
-	for i in range(n_samples):
-		plt.subplot(3, n_samples, 1 + n_samples + i)
-		plt.axis('off')
-		plt.imshow(X_fakeB[i,:,:,0], cmap='gray')
-	# plot real target image
-	for i in range(n_samples):
-		plt.subplot(3, n_samples, 1 + n_samples*2 + i)
-		plt.axis('off')
-		plt.imshow(X_realB[i,:,:,0], cmap='gray')
+
+	fig, axarr = plt.subplots(nrows=2, ncols=3, figsize=(21,14))
+	
+	axarr[0,0].imshow(X_realA[0,:,:,0], cmap="gray")
+	axarr[0,0].set_title('Input (Low Resolution)', fontweight='bold', fontsize=16)
+	axarr[0,0].axis('off')
+
+	axarr[0,1].imshow(X_realB[0,:,:,0], cmap="gray")
+	axarr[0,1].set_title('Target (High Resolution)', fontweight='bold', fontsize=16)
+	axarr[0,1].axis('off')
+
+	axarr[0,2].imshow(X_fakeB[0,:,:,0], cmap="gray")
+	axarr[0,2].set_title('Generated Image', fontweight='bold', fontsize=16)
+	axarr[0,2].axis('off')
+
+	axarr[1,0].imshow(X_realA[2,:,:,0], cmap="gray")
+	axarr[1,0].set_title('Input (Low Resolution)', fontweight='bold', fontsize=16)
+	axarr[1,0].axis('off')
+
+	axarr[1,1].imshow(X_realB[2,:,:,0], cmap="gray")
+	axarr[1,1].set_title('Target (High Resolution)', fontweight='bold', fontsize=16)
+	axarr[1,1].axis('off')
+
+	axarr[1,2].imshow(X_fakeB[2,:,:,0], cmap="gray")
+	axarr[1,2].set_title('Generated Image', fontweight='bold', fontsize=16)
+	axarr[1,2].axis('off')
+
+	fig.tight_layout()
+	
 	# save plot to file
 	filename1 = 'plot_%06d.png' % (step+1)
-	plt.savefig(filename1)
-	plt.close()
+	fig.savefig(filename1)
+	fig.close()
+	fig.show()
 	# save the generator model
 	filename2 = 'model_%06d.h5' % (step+1)
 	g_model.save(filename2)
@@ -292,7 +308,7 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 	# calculate the number of training iterations
 	n_steps = bat_per_epo * n_epochs
 	# manually enumerate epochs
-	for i in range(n_steps):
+	for i in tqdm(range(n_steps), desc="Training Progress"):
 		# select a batch of real samples
 		[X_realA, X_realB], y_real = generate_real_samples(dataset, n_batch, n_patch)
 		# generate a batch of fake samples
@@ -304,8 +320,8 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 		# update the generator
 		g_loss, _, _ = gan_model.train_on_batch(X_realA, [y_real, X_realB])
 		# summarize performance
-		print('>%d, d1[%.3f] d2[%.3f] g[%.3f]' % (i+1, d_loss1, d_loss2, g_loss))
+		tqdm.write(f'Step: {i+1}, D1 Loss: {d_loss1:.3f}, D2 Loss: {d_loss2:.3f}, G Loss: {g_loss:.3f}')
 		# summarize model performance
-		if (i+1) % (bat_per_epo * 10) == 0:
+		if (i+1) % 100 == 0:
 			summarize_performance(i, g_model, dataset)
 
