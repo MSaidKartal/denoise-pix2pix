@@ -290,7 +290,7 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 	filename1 = 'plot_%06d.png' % (step+1)
 	fig.savefig(filename1)
 	plt.close(fig)
-	fig.show()
+	plt.show()
 	
 	# save the generator model
 	filename2 = 'model_%06d.h5' % (step+1)
@@ -326,5 +326,5 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 		# summarize model performance
 		if (i+1) % 100 == 0:
 			summarize_performance(i, g_model, dataset)
-		progress_bar.close()
+	progress_bar.close()
 
