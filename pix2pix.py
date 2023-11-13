@@ -290,8 +290,9 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 	# save plot to file
 	filename1 = 'plot_%06d.png' % (step+1)
 	fig.savefig(filename1)
-	fig.show()
 	plt.close(fig)
+	fig.show()
+	
 	# save the generator model
 	filename2 = 'model_%06d.h5' % (step+1)
 	g_model.save(filename2)
@@ -316,11 +317,11 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 		# generate a batch of fake samples
 		X_fakeB, y_fake = generate_fake_samples(g_model, X_realA, n_patch)
 		# update discriminator for real samples
-		d_loss1 = d_model.train_on_batch([X_realA, X_realB], y_real)
+		d_loss1 = d_model.train_on_batch([X_realA, X_realB], y_real, verbose=0)
 		# update discriminator for generated samples
-		d_loss2 = d_model.train_on_batch([X_realA, X_fakeB], y_fake)
+		d_loss2 = d_model.train_on_batch([X_realA, X_fakeB], y_fake, verbose=0)
 		# update the generator
-		g_loss, _, _ = gan_model.train_on_batch(X_realA, [y_real, X_realB])
+		g_loss, _, _ = gan_model.train_on_batch(X_realA, [y_real, X_realB], verbose=0)
 		progress_bar.update(1)
 		progress_bar.set_postfix(D1_loss=d_loss1, D2_loss=d_loss2, G_loss=g_loss)
 		# summarize model performance
