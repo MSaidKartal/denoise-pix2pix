@@ -48,8 +48,8 @@ def interactive_show(vol):
 def show_3volume(vol, z, fig_size=(21, 7)):
     #print(vol[0].shape)
     #print(vol[1].shape)
-    psnr, ssim = calc_psvol(vol[1], vol[0])
-    psnr1, ssim1 = calc_psvol(vol[1], vol[2])
+    psnr, ssim = calc_psvol(vol[1][:, :, :, 0], vol[0][:, :, :, 0])
+    psnr1, ssim1 = calc_psvol(vol[1][:, :, :, 0], vol[2][:, :, :, 0])
     
     fig, axarr = plt.subplots(nrows=1, ncols=3, figsize=fig_size)
     v_z, v_y, v_x, n = vol[0].shape
