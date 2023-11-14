@@ -315,7 +315,7 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 	# calculate the number of batches per training epoch
 	bat_per_epo = int(len(trainA) / n_batch)
 	# calculate the number of training iterations
-	n_steps = 900 #bat_per_epo * n_epochs
+	n_steps = 900 * n_epochs
 	# setup progress bar
 	progress_bar = tqdm(total=n_steps, desc="Training Progress")
 	# manually enumerate epochs
