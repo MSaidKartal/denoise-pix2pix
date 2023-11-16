@@ -10,7 +10,7 @@ dirs = {
     'metrics': 'data/metrics.xlsx'
 }
 
-def load_case(case_name, preprocess=False):
+def load_case(case_name, preprocess=False, input_shape=(512,512)):
     case_num = case_name.split('_')[-1]
 
     path_list = glob.glob(f"{dirs['high_res']}/{case_num}.nii.gz")
@@ -27,8 +27,8 @@ def load_case(case_name, preprocess=False):
         X2 = []
 
         for i in range(len(inp)):
-            x1 = np.expand_dims(cv2.resize(inp[i], (512,512), interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
-            x2 = np.expand_dims(cv2.resize(target[i], (512,512), interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
+            x1 = np.expand_dims(cv2.resize(inp[i], input_shape, interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
+            x2 = np.expand_dims(cv2.resize(target[i], input_shape, interpolation = cv2.INTER_NEAREST),axis=-1).astype('float32')
             X1.append(x1)
             X2.append(x2)
 
