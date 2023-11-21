@@ -34,5 +34,5 @@ Tutorial:
 
 ![im](./assests/banner.jpeg)
 
-####Associated Group Works
+#### Associated Group Works
 > Alis, Deniz, et al. "Deep Learning for Assessing Image Quality in Bi-Parametric Prostate MRI: A Feasibility Study." European Journal of Radiology (2023): 110924. https://doi.org/10.1016/j.ejrad.2023.110924<br>
