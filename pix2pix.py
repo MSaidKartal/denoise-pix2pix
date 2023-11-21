@@ -290,12 +290,12 @@ def summarize_performance(step, g_model, dataset, n_samples=3):
 	# save plot to file
 	filename1 = 'plot_%06d.png' % (step+1)
 	fig.savefig(filename1)
-	plt.close(fig)
+	plt.close('all')
 	#plt.show()
 	img = Image.open(filename1)
 	
 	# Display the image
-	plt.figure(figsize=(21, 14))
+	plt.figure(figsize=(15, 10))
 	
 	# Display the image
 	plt.imshow(img)
@@ -333,7 +333,7 @@ def train(d_model, g_model, gan_model, dataset, n_epochs=100, n_batch=1):
 		progress_bar.update(1)
 		progress_bar.set_postfix(D1_loss=d_loss1, D2_loss=d_loss2, G_loss=g_loss)
 		# summarize model performance
-		if (i+1) % 100 == 0:
+		if (i+1) % 15 == 0:
 			summarize_performance(i, g_model, dataset)
 	progress_bar.close()
 
