@@ -32,4 +32,7 @@ We look forward to your active participation and the insightful discussions that
 Tutorial:
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/MSaidKartal/denoise-pix2pix/blob/main/tutorial.ipynb)
 
-![im](./assessts/banner.jpeg)
+![im](./assests/banner.jpeg)
+
+####Associated Group Works
+> Alis, Deniz, et al. "Deep Learning for Assessing Image Quality in Bi-Parametric Prostate MRI: A Feasibility Study." European Journal of Radiology (2023): 110924. https://doi.org/10.1016/j.ejrad.2023.110924<br>
